@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import sys
+
 
 def parse_inpute(input_path: str) -> list[str]:
     with open(input_path) as input:
@@ -6,7 +9,7 @@ def parse_inpute(input_path: str) -> list[str]:
     return lines
 
 
-def calculate_calories(input_path : str) -> int:
+def calculate_calories(input_path: str) -> int:
     lines = parse_inpute(input_path)
     current_max = 0
     current_sum = 0
