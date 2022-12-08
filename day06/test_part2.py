@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-import part2
 import pytest
+
+from . import part2
 
 
 @pytest.mark.parametrize(
@@ -12,7 +13,7 @@ import pytest
         ('bvwbjplbgvbhsrlpgdmjqwftvncz', 23),
         ('nppdvjthqldpwncqszvftbrmjlhg', 23),
         ('nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg', 29),
-        ('zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw', 26)
+        ('zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw', 26),
     ],
 )
 def test_input(signal, output):

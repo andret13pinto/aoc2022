@@ -16,6 +16,7 @@ def main(signal: str) -> int:
             del current[0]
         if len(set(current)) == 14:
             return pos + 1
+    return -1
 
 
 if __name__ == '__main__':

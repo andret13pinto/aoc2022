@@ -12,7 +12,7 @@ class Dir:
         self.name = name
         self.prev = prev
         self.size = 0
-        self.nodes: dict[Dir] = {}
+        self.nodes: dict[str, Dir] = {}
 
     def propagate_file(self, file_size: int):
         if self.prev is not None:
@@ -44,7 +44,9 @@ def main(input_path: str) -> int:
                 file_system[current_dir.id].size += int(file_size)
                 current_dir.propagate_file(int(file_size))
         elif '$ cd ..' in line:
-            current_dir = file_system[current_dir.id].prev
+            prev = file_system[current_dir.id].prev
+            if prev is not None:
+                current_dir = prev
         elif '$ cd' in line:
             current_dir = current_dir.nodes[line.split(' ')[2]]
     return sum([d.size for d in file_system.values() if d.size <= 100_000])

@@ -12,7 +12,7 @@ class Dir:
         self.name = name
         self.prev = prev
         self.size = 0
-        self.nodes: dict[Dir] = {}
+        self.nodes: dict[str, Dir] = {}
 
     def propagate_file(self, file_size: int) -> None:
         if self.prev is not None:
@@ -29,8 +29,11 @@ def parse_input(input_path: str) -> list[str]:
 def find_file_to_remove(file_system: dict):
     REQUIRED_SIZE = 30_000_000
     MAX_SIZE = 70_000_000
-    ord_file_system = {k: v for k, v in sorted(
-        file_system.items(), key=lambda item: item[1].size)}
+    ord_file_system = {
+        k: v for k, v in sorted(
+            file_system.items(), key=lambda item: item[1].size,
+        )
+    }
     size_root = ord_file_system[0].size
     for item in ord_file_system.values():
         if (MAX_SIZE-size_root) + item.size >= REQUIRED_SIZE:
@@ -55,7 +58,9 @@ def main(input_path: str) -> int:
                 file_system[current_dir.id].size += int(file_size)
                 current_dir.propagate_file(int(file_size))
         elif '$ cd ..' in line:
-            current_dir = file_system[current_dir.id].prev
+            prev = file_system[current_dir.id].prev
+            if prev is not None:
+                current_dir = prev
         elif '$ cd' in line:
             current_dir = current_dir.nodes[line.split(' ')[2]]
     return find_file_to_remove(file_system)

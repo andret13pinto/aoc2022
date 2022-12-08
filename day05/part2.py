@@ -19,20 +19,21 @@ def parse_commands(input_path: str) -> list[list[int]]:
             lines.append([
                 int(line.split(' ')[1]),
                 int(line.split(' ')[3]),
-                int(line.split(' ')[5])
+                int(line.split(' ')[5]),
             ])
     return lines
 
 
 def populate_stacks(nr_stacks: int, lines: list[str]) -> list[list]:
-    stacks = [[] for _ in range(nr_stacks)]
+    stacks: list[list] = [[] for _ in range(nr_stacks)]
     pos_map = {4*pos + 1: pos for pos in range(nr_stacks)}
     for i, line in enumerate(lines):
         if i == len(lines) - 1:
-            return stacks
+            break
         for pos, char in enumerate(line):
             if pos in pos_map.keys() and str.isalpha(char):
                 stacks[pos_map[pos]].append(char)
+    return stacks
 
 
 def move_crates(stacks: list[list], commands: list[list[int]]) -> list[list]:
@@ -42,7 +43,7 @@ def move_crates(stacks: list[list], commands: list[list[int]]) -> list[list]:
     return stacks
 
 
-def main(input_path_stacks: str, input_path_commands: str) -> int:
+def main(input_path_stacks: str, input_path_commands: str) -> str:
     nr_stacks, lines = parse_stacks(input_path_stacks)
     stacks = populate_stacks(nr_stacks, lines)
     cmds = parse_commands(input_path_commands)

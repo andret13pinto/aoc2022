@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-import part2
 import pytest
+
+from . import part2
 
 
 @pytest.mark.parametrize(
