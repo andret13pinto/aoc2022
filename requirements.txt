@@ -1,5 +1,6 @@
-pytest
-pre-commit
-mypy
-flake8
 autopep8
+flake8
+mypy
+numpy
+pre-commit
+pytest
