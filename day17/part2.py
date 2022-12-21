@@ -39,13 +39,15 @@ def print_grid(rest_rocks: list[tuple]) -> None:
     print(output_string)
 
 
-def main(input_path: str) -> int:
-    jets = iter(cycle(parse_input(input_path)))
+def find_heights(jets: cycle) -> list[int]:
     rest_rocks = [((0, -1), (1, -1), (2, -1), (3, -1),
                   (4, -1), (5, -1), (6, -1))]
     rocks = ROCKS
+    heights: list[int] = [-1]
     for rock_nr, _ in cycle(enumerate(rocks)):
-        if len(rest_rocks) == 2023:
+        if len(rest_rocks) % 1000 == 0:
+            print(len(rest_rocks))
+        if len(rest_rocks) == 4000:
             break
         rock = rocks[rock_nr]
         while True:
@@ -74,6 +76,7 @@ def main(input_path: str) -> int:
                 if (unit[0], unit[1] - 1) in chain(*rest_rocks):
                     rest_rocks.append(rock)
                     max_height = max([y for _, y in chain(*rest_rocks)])
+                    heights.append(max_height)
                     rocks = tuple(tuple((item[0], item[1] + max_height + 1)
                                         for item in rock) for rock in ROCKS)
                     break
@@ -81,8 +84,26 @@ def main(input_path: str) -> int:
                 rock = tuple((unit[0], unit[1] - 1) for unit in rock)
                 continue
             break
-    # print_grid(rest_rocks)
-    return max([y for _, y in chain(*rest_rocks)]) + 1
+    return [heights[i] - heights[i-1] for i in range(1, len(heights))]
+
+
+def main(input_path: str) -> int:
+    jets = iter(cycle(parse_input(input_path)))
+    delta_heights = find_heights(jets)
+    for size_rep in range(6, len(delta_heights)//2):
+        for size_start in range(1, len(delta_heights)):
+            if (size_start + size_rep > len(delta_heights) or
+                    size_start + 2*size_rep > len(delta_heights)):
+                break
+            first = delta_heights[size_start: size_start + size_rep]
+            second = delta_heights[size_start +
+                                   size_rep: size_start + 2*size_rep]
+            if first == second:
+                height_start = sum(delta_heights[:size_start])
+                height_rep = sum(first)
+                nr_reps = (1_000_000_000_000 - size_start)//size_rep
+                rest = (1_000_000_000_000 - size_start) % size_rep
+                return nr_reps*height_rep + height_start + sum(first[:rest])
 
 
 if __name__ == '__main__':

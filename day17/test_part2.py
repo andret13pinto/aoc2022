@@ -9,7 +9,7 @@ from . import part2
     ('input_path', 'output'),
 
     [
-        ('test_input.txt', 56000011),
+        ('test_input.txt', 1514285714288),
     ],
 )
 def test_input(input_path, output):
